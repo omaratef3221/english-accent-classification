@@ -21,7 +21,7 @@ label_names = [
 num_classes = len(label_names)
 
 # Load model
-device = 'mps'  # or 'cuda' / 'cpu'
+device = 'cpu'  # or 'cuda' / 'cpu'
 model = Net(n_classes=num_classes)
 model.load_state_dict(torch.load("model.pth", map_location=device))
 model.to(device)

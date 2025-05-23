@@ -27,7 +27,7 @@ This project provides an end-to-end pipeline for classifying English accents fro
 ## Demo
 
 Try the live demo here:  
-👉 **[Streamlit App Link – https://english-accent-classification.streamlit.app/]**
+👉 **[https://english-accent-classification.streamlit.app/]**
 
 ---
 
