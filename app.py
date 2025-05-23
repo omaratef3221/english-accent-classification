@@ -5,7 +5,7 @@ import librosa
 import numpy as np
 import tempfile
 import os
-from model import Net  # import your Net class
+from model import Net  # your saved model class
 
 # Parameters
 sr = 22050
@@ -21,7 +21,7 @@ label_names = [
 num_classes = len(label_names)
 
 # Load model
-device = 'mps'
+device = 'mps'  # or 'cuda' / 'cpu'
 model = Net(n_classes=num_classes)
 model.load_state_dict(torch.load("model.pth", map_location=device))
 model.to(device)
@@ -36,7 +36,7 @@ def get_spectrogram(signal):
     return spec_norm
 
 # UI
-st.title("English Accent Classifier")
+st.title("🎙️ English Accent Classifier")
 
 uploaded_file = st.file_uploader("Upload an audio file (.mp3)", type=["mp3"])
 
@@ -61,15 +61,23 @@ if uploaded_file is not None:
         output = model(input_tensor)
         probs = torch.softmax(output, dim=1).cpu().numpy()[0]
 
-    # Display Prediction
+    # Cleanup
+    os.remove(tmp_path)
+
+    # Show prediction
     st.subheader("Prediction")
     top_idx = int(np.argmax(probs))
     top_label = label_names[top_idx]
-    st.write(f"Predicted Accent: **{top_label}**")
+    st.write(f"**Predicted Accent:** {top_label}")
 
-    # Confidence Scores
-    st.subheader("Confidence per class")
-    st.bar_chart({label_names[i]: probs[i] for i in range(len(label_names))})
+    # Top 3 predictions
+    st.markdown("**Top 3 Predictions:**")
+    sorted_probs = sorted(enumerate(probs), key=lambda x: x[1], reverse=True)
+    top_3 = [(label_names[i], round(p * 100, 2)) for i, p in sorted_probs[:3]]
+    for label, p in top_3:
+        st.write(f"{label}: {p}%")
 
-    # Cleanup
-    os.remove(tmp_path)
+    # Full Confidence Chart
+    st.subheader("Confidence per class (%)")
+    percentages = {label_names[i]: round(probs[i] * 100, 2) for i in range(len(label_names))}
+    st.bar_chart(percentages)
