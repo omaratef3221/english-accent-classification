@@ -27,7 +27,7 @@ This project provides an end-to-end pipeline for classifying English accents fro
 ## Demo
 
 Try the live demo here:  
-👉 **[Streamlit App Link – Paste your link here]**
+👉 **[Streamlit App Link – https://english-accent-classification.streamlit.app/]**
 
 ---
 
@@ -100,9 +100,3 @@ Then open the provided local URL in your browser.
 - Dataset: [English Accent DataSet on HuggingFace](https://huggingface.co/datasets/westbrook/English_Accent_DataSet)
 - Streamlit for the web interface
 - PyTorch and Librosa for model and audio processing
-
----
-
-**Paste your Streamlit app link above for easy access!**
-
----
